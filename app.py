@@ -20,13 +20,13 @@ inventory = [
     }
 ]
 
-# GET /inventory -> Fetch all items
+# GET -> Fetch all items
 
 @app.route('/inventory', methods=['GET'])
 def get_inventory():
     return jsonify(inventory), 200
 
-# GET /inventory/<id> -> Fetch a single item
+# GET -> Fetch a single item
 @app.route('/inventory/<int:item_id>', methods=['GET'])
 def get_item(item_id):
     item = next((i for i in inventory if i["id"] == item_id), None)
