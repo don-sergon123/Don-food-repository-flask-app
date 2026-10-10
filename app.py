@@ -79,3 +79,23 @@ def delete_item(item_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+def fetch_external_product(barcode_or_name):
+    """Queries OpenFoodFacts API by barcode or product name."""
+    url = f"https://world.openfoodfacts.org/api/v0/product/{barcode_or_name}.json"
+    try:
+        response = requests.get(url, timeout=5)
+        if response.status_code == 200:
+            data = response.json()
+            if data.get("status") == 1:
+                product_info = data.get("product", {})
+                return {
+                    "product_name": product_info.get("product_name"),
+                    "brands": product_info.get("brands"),
+                    "ingredients_text": product_info.get("ingredients_text")
+                }
+        return None
+    except requests.exceptions.RequestException as e:
+        print(f"API Connection Error: {e}")
+        return None
+
